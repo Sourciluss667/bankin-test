@@ -107,6 +107,7 @@ async function main () {
 
     // Get all user's transactions
     // Note : Account '0000000013' exist but API return 'Account not found'
+    // It's because in the server data, for transactions, acc_number is wrong (miss one 0)
     for (let i = 0; i < all_accounts.length; i++) {
         let transactions;
         pageCount = 1;
@@ -160,7 +161,7 @@ async function main () {
             amount: all_accounts[i].amount,
             transactions: all_accounts[i].transactions.map(transaction => ({
                 label: transaction.label,
-                amount: transaction.amount,
+                amount: transaction.sign === 'DBT' ? `-${transaction.amount}` : transaction.amount,
                 currency: transaction.currency,
             }))
         });
